@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apoyo y Consultas en Seguridad para ONGs en Entornos Complejos</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Enlaces para Leaflet y XLSX -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <header>
+        <h1>Apoyo y Consultas en Seguridad para ONGs en Entornos Complejos</h1>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#mapa">Mapa Interactivo</a></li>
+                <li><a href="#noticias">Noticias</a></li>
+                <li><a href="#enlaces-de-interes">Enlaces de Interés</a></li>
+                <li><a href="#ultimas-actualizaciones">Últimas Actualizaciones</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio">
+            <h2>Bienvenido a la Plataforma de Apoyo y Consultas en Seguridad para ONGs en Entornos Complejos</h2>
+            <p>En un mundo en constante cambio, las organizaciones no gubernamentales (ONGs) desempeñan un papel crucial en la promoción de la justicia social, el desarrollo sostenible y la ayuda humanitaria. Sin embargo, estos esfuerzos a menudo se desarrollan en entornos complejos y, a veces, peligrosos. Nuestra plataforma está diseñada para proporcionar un recurso integral y accesible, repleto de información y herramientas que ayudarán a las ONGs a gestionar y mitigar los riesgos asociados con su trabajo en estas áreas. A través de guías prácticas, estudios de caso y recursos valiosos, buscamos empoderar a las organizaciones para que implementen mejores prácticas de seguridad que protejan tanto a su personal como a las comunidades a las que sirven. Invitamos a todos los actores del sector humanitario a explorar los diversos recursos disponibles, desde mapas interactivos y estadísticas delictivas hasta noticias actualizadas y eventos relevantes. Juntos, podemos fortalecer la seguridad y la resiliencia de nuestras iniciativas, garantizando así un impacto positivo y duradero en las comunidades en riesgo. ¡Gracias por ser parte de esta misión!</p>
+        </section>
+
+        <section id="mapa">
+            <h2>Mapa Interactivo</h2>
+            <div id="map" style="height: 400px;"></div>
+            <script>
+                // Inicializa el mapa
+                function initMap() {
+                    var map = L.map('map').setView([8.4, -73.4], 8); // Ajusta la posición inicial y el zoom
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                    }).addTo(map);
+                }
+                window.onload = initMap;
+            </script>
+        </section>
+
+        <section id="noticias">
+            <h2>Noticias y Actualizaciones</h2>
+            <p>Aquí encontrarás las últimas noticias de interés.</p>
+            <input type="file" id="fileInput" accept=".xlsx, .xls"/>
+            <button id="openFileBtn">Cargar Noticias</button>
+            <script>
+                document.getElementById('openFileBtn').addEventListener('click', function() {
+                    const fileInput = document.getElementById('fileInput');
+                    if (fileInput.files.length === 0) {
+                        alert("Por favor, selecciona un archivo de Excel primero.");
+                        return;
+                    }
+                    
+                    const file = fileInput.files[0];
+                    const fileURL = URL.createObjectURL(file);
+                    
+                    // Abre el archivo en una nueva pestaña
+                    window.open(fileURL, '_blank');
+                });
+            </script>
+        </section>
+
+        <section id="enlaces-de-interes">
+            <h2>Enlaces de Interés</h2>
+            <ul>
+                <li><a href="https://www.disasterready.org/" target="_blank" rel="noopener noreferrer">DisasterReady</a> - Gestión de riesgos y desastres para ONGs.</li>
+                <li><a href="https://www.r4v.info/es/colombia/" target="_blank" rel="noopener noreferrer">GIFMM</a> - Coordinación de la respuesta a necesidades de movilidad humana.</li>
+                <li><a href="https://disasteralert.pdc.org/disasteralert/" target="_blank" rel="noopener noreferrer">Disaster Alert</a> - Información en tiempo real sobre desastres naturales.</li>
+                <li><a href="https://www.gov.uk/foreign-travel-advice/colombia/safety-and-security/" target="_blank" rel="noopener noreferrer">Briefing Seguridad Colombia</a> - Noticias y análisis sobre seguridad en diversas regiones.</li>
+                <li><a href="https://www.redcross.org/" target="_blank" rel="noopener noreferrer">Cruz Roja</a> - Asistencia en emergencias y capacitación en seguridad.</li>
+                <li><a href="https://alertastempranas.defensoria.gov.co/" target="_blank" rel="noopener noreferrer">Alerta Temprana</a> - Información sobre alertas tempranas de riesgos en Colombia.</li>
+                <li><a href="https://www.unocha.org/" target="_blank" rel="noopener noreferrer">OCHA</a> - Coordinación de la respuesta humanitaria en crisis.</li>
+                <li><a href="https://public.tableau.com/app/profile/fundaci.n.paz.y.reconciliaci.n/viz/PresenciaEAIenColombia2024/AnlisisGeneralInteractivo" target="_blank" rel="noopener noreferrer">Fundación Paz y Reconciliación - Presencia EAI en Colombia 2024</a></li>
+                <li><a href="https://es.numbeo.com/criminalidad/pa%C3%ADs/Colombia" target="_blank" rel="noopener noreferrer">Numbeo - Índice de Criminalidad en Colombia</a></li>
+                <li><a href="https://www.renovacionterritorio.gov.co/especiales/especial_pdet/" target="_blank" rel="noopener noreferrer">PDET - Programas de Desarrollo con Enfoque Territorial</a> - Conozca en el mapa los territorios que están cobijados por los Programas de Desarrollo con Enfoque Territorial PDET en Colombia.</li>
+            </ul>
+        </section>
+
+        <section id="ultimas-actualizaciones">
+            <h2>Últimas Actualizaciones</h2>
+            <ul>
+                <li>
+                    <a href="https://reliefweb.int/report/colombia/policy-brief-ending-child-early-and-forced-marriages-and-unions-colombia-august-2024" target="_blank" rel="noopener noreferrer">Política: Poner Fin a los Matrimonios y Uniones Infantiles, Forzados y Precoz</a> - Un informe sobre las políticas necesarias para abordar esta problemática en Colombia.
+                </li>
+
+                <li>
+                    <a href="https://reliefweb.int/report/colombia/colombia-plan-de-respuesta-prioridades-comunitarias-2024-2025-prpc-sistema-345w-actividades-reportadas-entre-enero-y-agosto-de-2024-publicacion-04-de-octubre-de-2024" target="_blank" rel="noopener noreferrer">
+                        Informe del Plan de Respuesta - Prioridades Comunitarias 2024-2025
+                    </a> - Un resumen de las actividades reportadas en el primer semestre del 2024.
+                </li>
+            </ul>
+        </section>
+
+        <section id="contacto">
+            <h2>Contacto y Sugerencias</h2>
+            <p>Si tienes preguntas o sugerencias, no dudes en contactarnos a través del siguiente formulario:</p>
+            <form id="contactForm">
+                <div>
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div>
+                    <label for="email">Correo Electrónico:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div>
+                    <label for="mensaje">Mensaje:</label>
+                    <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </section>
+        
+
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Apoyo y Consultas en Seguridad para ONGs en Entornos Complejos. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>
