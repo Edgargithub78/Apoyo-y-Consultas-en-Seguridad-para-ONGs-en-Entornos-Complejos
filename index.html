@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
 
 </head>
@@ -51,52 +52,12 @@
         <section id="noticias">
             <h2>Noticias y Actualizaciones</h2>
             <p>Aquí encontrarás las últimas noticias de interés desde el archivo <b>NOTICIAS 2024 COLOMBIA</b>.</p>
-            
-            <!-- Sección para cargar un archivo -->
-            <input type="file" id="fileInput" accept=".xlsx">
-            <button id="loadFileBtn">Cargar Noticias</button>
-            
+            <a href="assets/NOTICIAS%202024%20COLOMBIA.xlsx" download>Descargar Noticias</a> <!-- Enlace para descargar el archivo -->
+            <button id="openFileBtn">Cargar Noticias</button>
             <div id="newsContainer"></div> <!-- Contenedor para mostrar las noticias -->
         </section>
-        
-        <script>
-            document.getElementById('loadFileBtn').addEventListener('click', function() {
-                const fileInput = document.getElementById('fileInput');
-                const file = fileInput.files[0];
-        
-                if (!file) {
-                    alert("Por favor, selecciona un archivo para cargar.");
-                    return;
-                }
-        
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                    const newsContainer = document.getElementById('newsContainer');
-                    newsContainer.innerHTML = ""; // Limpia el contenedor antes de mostrar nuevas noticias
-                    
-                    jsonData.forEach((row, index) => {
-                        if (index > 0) { // Saltar la fila de cabecera
-                            const newsItem = document.createElement('p');
-                            newsItem.textContent = `Noticia: ${row[0]} - Fecha: ${row[1]}`;
-                            newsContainer.appendChild(newsItem);
-                        }
-                    });
-                };
-        
-                reader.readAsArrayBuffer(file);
-            });
-        </script>
-        
-        
-              
-        
-
+               
+               
         <section id="enlaces-de-interes">
             <h2>Enlaces de Interés</h2>
             <ul>
