@@ -1,46 +1,45 @@
-document.getElementById('openFileBtn').addEventListener('click', function() {
-    const fileInput = document.getElementById('fileInput');
-    fileInput.click(); // Abre el selector de archivos
+// Inicializa el mapa interactivo
+function initMap() {
+    var map = L.map('map').setView([8.4, -73.4], 8); // Ajusta la posición y el zoom inicial
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
+}
+window.onload = initMap; // Asegúrate de inicializar el mapa cuando la página cargue
 
-    fileInput.onchange = function() {
-        if (fileInput.files.length === 0) {
-            alert("Por favor, selecciona un archivo de Excel primero.");
-            return;
-        }
-        
-        const file = fileInput.files[0];
+// Función para cargar las noticias desde un archivo Excel
+document.getElementById('openFileBtn').addEventListener('click', function () {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx';
+    input.addEventListener('change', (event) => {
+        const file = event.target.files[0];
         const reader = new FileReader();
-
-        reader.onload = function(event) {
-            const data = new Uint8Array(event.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet);
-            const tableBody = document.querySelector('#newsTable tbody');
-            tableBody.innerHTML = ""; // Limpia la tabla antes de agregar nuevos datos
-
-            jsonData.forEach(row => {
-                const newRow = tableBody.insertRow();
-                newRow.insertCell(0).innerText = row.Titulo || "Sin título"; // Cambia 'Titulo' según tu archivo
-                newRow.insertCell(1).innerText = row.Fecha || "Sin fecha";   // Cambia 'Fecha'
-                newRow.insertCell(2).innerText = row.Contenido || "Sin contenido"; // Cambia 'Contenido'
-            });
+        reader.onload = (e) => {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const sheet = workbook.Sheets[sheetName];
+            const newsData = XLSX.utils.sheet_to_json(sheet); // Convierte la hoja en JSON
+            displayNews(newsData);
         };
-
-        reader.onerror = function() {
-            alert("Error al leer el archivo. Por favor, verifica el formato.");
-        };
-
         reader.readAsArrayBuffer(file);
-    };
-});
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
     });
+    input.click(); // Abre el cuadro de selección de archivo
 });
+
+// Muestra las noticias cargadas desde el archivo Excel
+function displayNews(newsData) {
+    const container = document.getElementById('newsContainer');
+    container.innerHTML = ''; // Limpia el contenedor de noticias antes de mostrar nuevas
+
+    newsData.forEach((item, index) => {
+        const newsItem = document.createElement('div');
+        newsItem.classList.add('news-item');
+        newsItem.innerHTML = `
+            <h3>${item.Titulo || 'Sin Título'}</h3>
+            <p>${item.Descripcion || 'Sin Descripción'}</p>
+        `;
+        container.appendChild(newsItem);
+    });
+}
